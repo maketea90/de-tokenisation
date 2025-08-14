@@ -67,7 +67,7 @@ class Tokeniser:
             i = 0
             while i < len(subword):
                 
-                if subword[i] == a and subword[i+1] == b and a != '</w>' and b != '</w>':
+                if subword[i] == a and subword[i+1] == b:
                     new_subword.append(a + b)
                     i += 2
                 else:
@@ -108,16 +108,34 @@ class Tokeniser:
         # 1) words -> subwords (characters + </w>)
         subwords = self.split_into_subwords(tokens)
 
+        
+        
+        # pair_counts = self.count_symbol_pairs(subwords)
+
+
+        # filtered_pairs = {}
+        # for p, c in pair_counts.items():
+        #     if p[1] != self.END_OF_WORD_SYMBOL:
+        #         filtered_pairs[p] = c
         # 2) apply N merges
+
+        
         for _ in range(num_merges):
-            pair_counts = self.count_symbol_pairs(subwords)
+                
+            pair_count = self.count_symbol_pairs(subwords)
+            
+            filtered_pairs = {}
+            for p, c in pair_count.items():
+                if p[1] != self.END_OF_WORD_SYMBOL:
+                    filtered_pairs[p] = c
+
             # for key, value in pair_counts.items():
 
             # if not pair_counts:
             #     break
 
-            merged = self.merge_most_frequent_pair(subwords, pair_counts)
-
+            merged = self.merge_most_frequent_pair(subwords, filtered_pairs)
+            print(merged)
             # if no changes occurred, stop (prevents infinite loop)
             if merged == subwords:
                 break
