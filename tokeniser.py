@@ -7,6 +7,7 @@ class Tokeniser:
 
     def __init__(self):
         self.END_OF_WORD_SYMBOL = '</w>'
+        self.vocab: set[str] = set({})
         
 
     def tokenise(self, text: str) -> list[str]:
@@ -69,6 +70,7 @@ class Tokeniser:
                 
                 if subword[i] == a and subword[i+1] == b:
                     new_subword.append(a + b)
+
                     i += 2
                 else:
                     new_subword.append(subword[i])
@@ -94,7 +96,10 @@ class Tokeniser:
         #     if p[1] != self.END_OF_WORD_SYMBOL:
         #         filtered_pairs[p] = c
         # 2) apply N merges
-
+        # print(subwords)   
+        for word in subwords:
+            self.vocab.update(word)
+        
         
         for _ in range(num_merges):
                 
@@ -104,21 +109,23 @@ class Tokeniser:
             for p, c in pair_count.items():
                 if p[1] != self.END_OF_WORD_SYMBOL:
                     filtered_pairs[p] = c
-
-            # for key, value in pair_counts.items():
-
-            # if not pair_counts:
-            #     break
-
-            merged = self.merge_most_frequent_pair(subwords, filtered_pairs)
-            print(merged)
-            # if no changes occurred, stop (prevents infinite loop)
-            if merged == subwords:
+            # print(filtered_pairs)
+            if filtered_pairs == {}:
                 break
-
+            merged = self.merge_most_frequent_pair(subwords, filtered_pairs)
+            a, b = max(filtered_pairs.items(), key=lambda x: x[1])[0]
+            print(a, b)
+            self.vocab.add(a + b)
+            # print(merged)
+                    
             subwords = merged
-
+        # self.vocab = set(self.vocab)
         return subwords
+    
+    def get_vocab(self) -> set[str]:
+        return self.vocab
+    
+
 
         
             

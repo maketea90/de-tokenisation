@@ -98,6 +98,26 @@ def test_build_bpe_vocab_multiple_merges():
         ["ab", "</w>"],  
         ["aa", "</w>"]   
     ]
-    print(result)
-
+    # print(result)
+    print(t.get_vocab())
     assert result == expected
+
+# def test_vocab():
+
+#     t = Tokeniser()
+#     result = t.build_bpe_vocab(["cat", "car", "cart"], num_merges=5)
+
+# # After merging, this should include things like:
+# # {'c', 'a', 't', 'r', '</w>', 'ca', 'ar', 'car'}
+#     vocab = t.get_vocab()
+#     print(vocab)
+#     print(result)
+#     assert vocab == {'c', 'a', 't', 'r', '</w>', 'ca', 'ar', 'car'}
+
+def test_vocab_tracks_merged_symbols():
+    t = Tokeniser()
+    t.build_bpe_vocab(["aa", "ab", "aa"], num_merges=2)
+    vocab = t.get_vocab()
+    assert "a" in vocab
+    assert "aa" in vocab
+    assert "ab" in vocab
