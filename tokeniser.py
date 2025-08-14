@@ -75,30 +75,6 @@ class Tokeniser:
                     i += 1
             result.append(new_subword)
         return result
-        
-    def build_bpe_vocab_test(
-    self,
-    tokens: list[str],
-    num_merges: int
-) -> list[list[str]]:
-        
-        
-        
-        subwords = self.split_into_subwords(tokens)
-
-        symbol_pair_frequencies = self.count_symbol_pairs(subwords)
-        
-        for i in range(num_merges):
-            if i == 0:
-                print(symbol_pair_frequencies)
-                merged = self.merge_most_frequent_pair(subwords, symbol_pair_frequencies)
-                (k := next(iter(symbol_pair_frequencies)), symbol_pair_frequencies.pop(k))
-                print(symbol_pair_frequencies)
-            else:
-                merged = self.merge_most_frequent_pair(merged, symbol_pair_frequencies)
-                (k := next(iter(symbol_pair_frequencies)), symbol_pair_frequencies.pop(k))
-                print(symbol_pair_frequencies)
-        return merged
     
     def build_bpe_vocab(
         self,
