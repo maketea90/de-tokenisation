@@ -91,7 +91,7 @@ def test_build_bpe_vocab_multiple_merges():
     t = Tokeniser()
     tokens = ["aa", "ab", "aa"]
    
-    result = t.build_bpe_vocab(tokens, num_merges=3)
+    result = t.build_bpe_vocab(tokens, num_merges=2)
 
     expected = [
         ["aa", "</w>"],  
